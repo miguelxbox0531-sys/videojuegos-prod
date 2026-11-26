@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Mi Tienda de Juegos</title>
+    <!-- Esta línea conecta con tu archivo estilos.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Mi Tienda de Juegos</h1>
+        <div>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+
+    <div class="auth-wrapper" style="height: 80vh;">
+        <div class="auth-card">
+            <h2>Iniciar Sesión</h2>
+            
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div style="color: #e74c3c; margin-bottom: 10px;">
+                {% for message in messages %}
+                  {{ message }}
+                {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="/login">
+                <input type="text" name="username" placeholder="Usuario" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <button type="submit" class="btn btn-info">Entrar</button>
+            </form>
+            <a href="/registro">¿No tienes cuenta? Regístrate aquí</a>
+        </div>
+    </div>
+</body>
+</html>
