@@ -4,13 +4,12 @@ from config import Config
 from models import db, Usuario
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-import time  # <--- Importante para esperar a la BD
+import time 
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db.init_app(app)
 
-# Bucle de espera para que MySQL esté listo antes de crear las tablas
 with app.app_context():
     for i in range(10):
         try:
@@ -23,7 +22,7 @@ with app.app_context():
 
 migrate = Migrate(app, db)
 
-# Configuración del Login
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -32,7 +31,6 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return Usuario.query.get(int(user_id))
 
-# --- RUTAS DE AUTENTICACIÓN ---
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -63,7 +61,7 @@ def registro():
         return redirect('/login')
     return render_template('registro.html')
 
-# --- RUTAS DE JUEGOS (Protegidas con Login) ---
+
 
 @app.route("/")
 @app.route("/juegos")
