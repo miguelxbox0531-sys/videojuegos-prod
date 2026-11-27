@@ -4,24 +4,27 @@ from config import Config
 from models import db, Usuario
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-import time 
+import time
+import sys
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db.init_app(app)
-
-with app.app_context():
-    for i in range(10):
-        try:
-            db.create_all()
-            print("¡Base de datos conectada y tablas creadas!")
-            break
-        except Exception as e:
-            print(f"Esperando a la base de datos... (intento {i+1}/10)")
-            time.sleep(3)
-
 migrate = Migrate(app, db)
 
+with app.app_context():
+    print("--- INICIANDO CREACIÓN DE TABLAS ---", flush=True)
+    for i in range(15):
+        try:
+            db.create_all()
+            print("¡Base de datos conectada y tablas creadas exitosamente!", flush=True)
+            break
+        except Exception as e:
+            print(f"Esperando a la base de datos... (intento {i+1}/15). Error: {e}", flush=True)
+            time.sleep(3)
+    else:
+        print("No se pudo conectar a la base de datos después de varios intentos.", flush=True)
+        sys.exit(1)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

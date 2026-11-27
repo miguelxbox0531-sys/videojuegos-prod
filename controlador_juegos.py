@@ -1,5 +1,6 @@
- 
 from bd import obtener_conexion
+import pymysql
+
 
 def insertar_juego(nombre, descripcion, precio):
     conexion = obtener_conexion()
@@ -11,14 +12,16 @@ def insertar_juego(nombre, descripcion, precio):
     conexion.commit()
     conexion.close()
 
+
 def obtener_juegos():
     conexion = obtener_conexion()
     juegos = []
-    with conexion.cursor() as cursor:
+    with conexion.cursor(pymysql.cursors.DictCursor) as cursor:
         cursor.execute("SELECT id, nombre, descripcion, precio FROM juegos")
         juegos = cursor.fetchall()
     conexion.close()
     return juegos
+
 
 def eliminar_juego(id):
     conexion = obtener_conexion()
@@ -27,10 +30,11 @@ def eliminar_juego(id):
     conexion.commit()
     conexion.close()
 
+
 def obtener_juego_por_id(id):
     conexion = obtener_conexion()
     juego = None
-    with conexion.cursor() as cursor:
+    with conexion.cursor(pymysql.cursors.DictCursor) as cursor:
         cursor.execute(
             "SELECT id, nombre, descripcion, precio FROM juegos WHERE id = %s",
             (id,)
@@ -38,6 +42,7 @@ def obtener_juego_por_id(id):
         juego = cursor.fetchone()
     conexion.close()
     return juego
+
 
 def actualizar_juego(nombre, descripcion, precio, id):
     conexion = obtener_conexion()

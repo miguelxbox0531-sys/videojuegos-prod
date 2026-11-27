@@ -3,26 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mi Tienda de Juegos</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
-        .navbar { background-color: #f9ca24; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .navbar h1 { margin: 0; font-size: 20px; color: #333; }
-        .navbar a { text-decoration: none; color: #333; font-weight: bold; margin-left: 20px; }
-        .navbar a:hover { color: #e74c3c; }
-        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
-        .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        h2 { color: #333; }
-        .btn-add { background-color: #2ecc71; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .btn-add:hover { background-color: #27ae60; }
-        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background-color: #f8f9fa; color: #555; font-weight: bold; }
-        tr:hover { background-color: #f1f1f1; }
-        .btn-edit { background-color: #3498db; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; font-size: 14px; }
-        .btn-edit:hover { background-color: #2980b9; }
-        .btn-delete { background-color: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
-        .btn-delete:hover { background-color: #c0392b; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 </head>
 <body>
     <div class="navbar">
@@ -34,32 +15,31 @@
     </div>
 
     <div class="container">
-        <div class="header-actions">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2>Lista de Juegos</h2>
-            <a href="/agregar_juego" class="btn-add">+ Agregar Juego</a>
+            <a href="/agregar_juego" class="btn btn-success">+ Agregar Juego</a>
         </div>
 
-        <table>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
             <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Editar</th>
-                    <th>Eliminar</th>
+                <tr style="border-bottom: 2px solid #eee; text-align: left;">
+                    <th style="padding: 10px;">Nombre</th>
+                    <th style="padding: 10px;">Descripción</th>
+                    <th style="padding: 10px;">Precio</th>
+                    <th style="padding: 10px;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for juego in juegos %}
-                <tr>
-                    <td><strong>{{ juego.nombre }}</strong></td>
-                    <td>{{ juego.descripcion }}</td>
-                    <td>${{ juego.precio }}</td>
-                    <td><a href="/formulario_editar_juego/{{ juego.id }}" class="btn-edit">Editar</a></td>
-                    <td>
-                        <form action="/eliminar_juego" method="POST" style="margin: 0;">
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px;"><strong>{{ juego.nombre }}</strong></td>
+                    <td style="padding: 10px;">{{ juego.descripcion }}</td>
+                    <td style="padding: 10px;">${{ juego.precio }}</td>
+                    <td style="padding: 10px;">
+                        <a href="/formulario_editar_juego/{{ juego.id }}" class="btn btn-info" style="padding: 5px 10px; margin-top:0;">Editar</a>
+                        <form action="/eliminar_juego" method="POST" style="display: inline;">
                             <input type="hidden" name="id" value="{{ juego.id }}">
-                            <button type="submit" class="btn-delete" onclick="return confirm('¿Seguro que quieres eliminar este juego?')">Eliminar</button>
+                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; margin-top:0;" onclick="return confirm('¿Seguro que quieres eliminar este juego?')">Eliminar</button>
                         </form>
                     </td>
                 </tr>
